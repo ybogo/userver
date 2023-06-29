@@ -81,27 +81,29 @@ include(FindPackageRequired)
 include(IncludeWhatYouUse)
 include(FindPython)
 
-message(STATUS "Generating cmake files ...")
-execute_process(
-  COMMAND ${PYTHON}
-    -m pip install --disable-pip-version-check
-    -r ${USERVER_ROOT_DIR}/scripts/external_deps/requirements.txt
-  WORKING_DIRECTORY ${USERVER_ROOT_DIR}
-)
-execute_process(
-    COMMAND
-        ${PYTHON} -u ${USERVER_ROOT_DIR}/scripts/external_deps/cmake_generator.py
-        --repo-dir=${USERVER_ROOT_DIR}
-        --build-dir=${CMAKE_BINARY_DIR}
-    RESULT_VARIABLE RESULT
+if (NOT USERVER_CONAN)
+  message(STATUS "Generating cmake files ...")
+  execute_process(
+    COMMAND ${PYTHON}
+      -m pip install --disable-pip-version-check
+      -r ${USERVER_ROOT_DIR}/scripts/external_deps/requirements.txt
     WORKING_DIRECTORY ${USERVER_ROOT_DIR}
-)
+  )
+  execute_process(
+      COMMAND
+          ${PYTHON} -u ${USERVER_ROOT_DIR}/scripts/external_deps/cmake_generator.py
+          --repo-dir=${USERVER_ROOT_DIR}
+          --build-dir=${CMAKE_BINARY_DIR}
+      RESULT_VARIABLE RESULT
+      WORKING_DIRECTORY ${USERVER_ROOT_DIR}
+  )
 
-if (RESULT)
-    message(FATAL_ERROR
-        "Generating cmake files failed with exit code: ${RESULT}"
-    )
-endif(RESULT)
+  if (RESULT)
+      message(FATAL_ERROR
+          "Generating cmake files failed with exit code: ${RESULT}"
+      )
+  endif(RESULT)
+endif()
 
 set(USERVER_THIRD_PARTY_DIRS ${USERVER_ROOT_DIR}/third_party CACHE INTERNAL "")
 
