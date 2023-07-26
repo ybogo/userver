@@ -69,11 +69,12 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       find_package(unofficial-http-parser REQUIRED)
       include(FindNGHTTP2)
       find_package(NGHTTP2 REQUIRED)
+      find_package(unofficial-libev REQUIRED)
     else()
       find_package(http_parser REQUIRED)
       find_package(libnghttp2 REQUIRED)
+      find_package(libev REQUIRED)
     endif()
-    find_package(libev REQUIRED)
 
     find_package(concurrentqueue REQUIRED)
 else()
@@ -142,11 +143,13 @@ endif()
 
 if (USERVER_CONAN OR USERVER_VCPKG)
   if (USERVER_VCPKG)
-    set(http_parser_lib unofficial::http_parser::http_parser)
-    set(nghttp2_lib NGHTTP2)
+    set(http_parser_target unofficial::http_parser::http_parser)
+    set(nghttp2_target NGHTTP2)
+    set(libev_target unofficial::libev::libev)
   else()
-    set(http_parser_lib http_parser::http_parser)
-    set(nghttp2_lib libnghttp2::nghttp2)
+    set(http_parser_target http_parser::http_parser)
+    set(nghttp2_target libnghttp2::nghttp2)
+    set(libev_target libev::libev)
   endif()
 
   target_link_libraries(${PROJECT_NAME}
@@ -155,9 +158,9 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       concurrentqueue::concurrentqueue
     PRIVATE
       cryptopp::cryptopp
-      http_parser::http_parser
-      libev::libev
-      libnghttp2::nghttp2
+      ${http_parser_target}
+      ${nghttp2_target}
+      ${libev_target}
       spdlog::spdlog_header_only
   )
 else()
