@@ -114,13 +114,17 @@ target_link_libraries(${PROJECT_NAME}
     OpenSSL::SSL
 )
 
-if (USERVER_CONAN)
-  find_package(Boost COMPONENTS
-    stacktrace_basic
-    stacktrace_backtrace
-    stacktrace_addr2line
-    stacktrace_noop REQUIRED
-  )
+if (USERVER_CONAN OR USERVER_VCPKG)
+  if (USERVER_VCPKG)
+    find_package(Boost COMPONENTS stacktrace REQUIRED)
+  else()
+    find_package(Boost COMPONENTS
+      stacktrace_basic
+      stacktrace_backtrace
+      stacktrace_addr2line
+      stacktrace_noop
+    REQUIRED)
+  endif()
   target_link_libraries(${PROJECT_NAME}
     PUBLIC
       fmt::fmt
