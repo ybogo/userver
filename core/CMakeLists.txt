@@ -60,12 +60,16 @@ find_package_required(ZLIB "zlib1g-dev")
 find_package(Iconv REQUIRED)
 find_package_required(OpenSSL "libssl-dev")
 
-if (USERVER_CONAN)
+if (USERVER_CONAN OR USERVER_VCPKG)
     find_package(c-ares REQUIRED)
     find_package(CURL REQUIRED)
     find_package(cryptopp REQUIRED)
     find_package(spdlog REQUIRED)
-    find_package(http_parser REQUIRED)
+    if (USERVER_VCPKG)
+      find_package(unofficial-http-parser REQUIRED)
+    else()
+      find_package(http_parser REQUIRED)
+    endif()
     find_package(libnghttp2 REQUIRED)
     find_package(libev REQUIRED)
 
@@ -134,33 +138,39 @@ else()
     )
 endif()
 
-if (USERVER_CONAN)
-    target_link_libraries(${PROJECT_NAME}
-      PUBLIC
-        c-ares::cares
-        concurrentqueue::concurrentqueue
-      PRIVATE
-        cryptopp::cryptopp
-        http_parser::http_parser
-        libev::libev
-        libnghttp2::nghttp2
-        spdlog::spdlog_header_only
-    )
-else()
-    target_link_libraries(${PROJECT_NAME}
-      PUBLIC
-        c-ares::cares
-      PRIVATE
-        CryptoPP
-        Http_Parser
-        Nghttp2
-        LibEv
-        spdlog_header_only
-    )
+if (USERVER_CONAN OR USERVER_VCPKG)
+  if (USERVER_VCPKG)
+    set(http_parser_lib unofficial::http_parser::http_parser)
+  else()
+    set(http_parser_lib http_parser::http_parser)
+  endif()
 
-    target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
-        ${USERVER_THIRD_PARTY_DIRS}/moodycamel/include
-    )
+  target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+      c-ares::cares
+      concurrentqueue::concurrentqueue
+    PRIVATE
+      cryptopp::cryptopp
+      http_parser::http_parser
+      libev::libev
+      libnghttp2::nghttp2
+      spdlog::spdlog_header_only
+  )
+else()
+  target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+      c-ares::cares
+    PRIVATE
+      CryptoPP
+      Http_Parser
+      Nghttp2
+      LibEv
+      spdlog_header_only
+  )
+
+  target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
+    ${USERVER_THIRD_PARTY_DIRS}/moodycamel/include
+  )
 endif()
 
 if (NOT MACOS AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
