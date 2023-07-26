@@ -115,7 +115,12 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 if (USERVER_CONAN)
-  find_package(Boost COMPONENTS stacktrace REQUIRED)
+  find_package(Boost COMPONENTS
+    stacktrace_basic
+    stacktrace_backtrace
+    stacktrace_addr2line
+    stacktrace_noop REQUIRED
+  )
   target_link_libraries(${PROJECT_NAME}
     PUBLIC
       fmt::fmt
