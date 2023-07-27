@@ -122,7 +122,7 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       stacktrace_addr2line
       stacktrace_noop
     REQUIRED)
-    set(cctz_target unofficial::cctz::cctz)
+    set(cctz_target unofficial::cctz)
   else()
     find_package(Boost COMPONENTS stacktrace REQUIRED)
     set(cctz_target cctz::cctz)
