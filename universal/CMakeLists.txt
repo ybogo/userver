@@ -122,13 +122,16 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       stacktrace_addr2line
       stacktrace_noop
     REQUIRED)
+    set(cctz_target unofficial::cctz::cctz)
   else()
     find_package(Boost COMPONENTS stacktrace REQUIRED)
+    set(cctz_target cctz::cctz)
   endif()
+
   target_link_libraries(${PROJECT_NAME}
     PUBLIC
       fmt::fmt
-      cctz::cctz
+      ${cctz_target}
       Boost::stacktrace
     PRIVATE
       yaml-cpp
