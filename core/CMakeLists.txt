@@ -70,13 +70,13 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       include(FindNGHTTP2)
       find_package(NGHTTP2 REQUIRED)
       find_package(unofficial-libev REQUIRED)
+      find_package(unofficial-concurrentqueue REQUIRED)
     else()
       find_package(http_parser REQUIRED)
       find_package(libnghttp2 REQUIRED)
       find_package(libev REQUIRED)
+      find_package(concurrentqueue REQUIRED)
     endif()
-
-    find_package(concurrentqueue REQUIRED)
 else()
     include(SetupCAres)
     include(SetupCURL)
@@ -146,16 +146,18 @@ if (USERVER_CONAN OR USERVER_VCPKG)
     set(http_parser_target unofficial::http_parser::http_parser)
     set(nghttp2_target NGHTTP2)
     set(libev_target unofficial::libev::libev)
+    set(concurrentqueue_target unofficial::concurrentqueue::concurrentqueue)
   else()
     set(http_parser_target http_parser::http_parser)
     set(nghttp2_target libnghttp2::nghttp2)
     set(libev_target libev::libev)
+    set(concurrentqueue_target concurrentqueue::concurrentqueue)
   endif()
 
   target_link_libraries(${PROJECT_NAME}
     PUBLIC
       c-ares::cares
-      concurrentqueue::concurrentqueue
+      ${concurrentqueue_target}
     PRIVATE
       cryptopp::cryptopp
       ${http_parser_target}
