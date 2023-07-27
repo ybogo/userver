@@ -12,7 +12,7 @@
 
 #include <ares.h>
 #include <fmt/format.h>
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 
 #include <clients/dns/helpers.hpp>
 #include <clients/dns/wrappers.hpp>

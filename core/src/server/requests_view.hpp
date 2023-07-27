@@ -3,7 +3,7 @@
 #include <list>
 #include <memory>
 
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 #include <userver/engine/mutex.hpp>
 #include <userver/server/request/request_base.hpp>
 #include <userver/utils/periodic_task.hpp>

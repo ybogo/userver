@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <limits>
 
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 
 #include <userver/components/headers_propagator_component.hpp>
 #include <userver/logging/log.hpp>

@@ -3,7 +3,7 @@
 #include <future>
 #include <vector>
 
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 #include <boost/lockfree/queue.hpp>
 
 #include <compiler/relax_cpu.hpp>

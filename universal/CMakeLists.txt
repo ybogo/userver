@@ -123,16 +123,19 @@ if (USERVER_CONAN OR USERVER_VCPKG)
       stacktrace_noop
     REQUIRED)
     set(cctz_target unofficial::cctz)
+    #TODO add logic for choosing stacktrace implemetation on different platforms
+    set(stacktrace_target Boost::stacktrace_backtrace)
   else()
     find_package(Boost COMPONENTS stacktrace REQUIRED)
     set(cctz_target cctz::cctz)
+    set(stacktrace_target Boost::stacktrace)
   endif()
 
   target_link_libraries(${PROJECT_NAME}
     PUBLIC
       fmt::fmt
       ${cctz_target}
-      Boost::stacktrace
+      ${stacktrace_target}
     PRIVATE
       yaml-cpp
       cryptopp::cryptopp

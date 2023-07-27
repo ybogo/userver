@@ -4,7 +4,7 @@
 #include <limits>
 #include <memory>
 
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 
 #include <userver/concurrent/impl/semaphore_capacity_control.hpp>
 #include <userver/concurrent/queue_helpers.hpp>

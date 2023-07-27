@@ -5,7 +5,7 @@
 #include <cerrno>
 #include <utility>
 
-#include <moodycamel/concurrentqueue.h>
+#include <concurrentqueue/concurrentqueue.h>
 
 #include <coroutines/coroutine.hpp>
 
